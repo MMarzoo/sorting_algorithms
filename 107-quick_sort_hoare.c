@@ -1,95 +1,74 @@
 #include "sort.h"
-#include <stdio.h>
 /**
- * swap - change two values in ascending or descending order
- * @array: array
- * @a: item one
- * @b: item two
- * @order: 1: ascending order, 0 descending order
- */
-void swap(int array[], int a, int b, int order)
+*swap - the positions of two elements into an array
+*@array: array
+*@a: array element
+*@b: array element
+*/
+void swap(int *array, ssize_t a, ssize_t b)
 {
 	int tmp;
 
-	if (order == (array[a] > array[b]))
+	tmp = array[a];
+	array[a] = array[b];
+	array[b] = tmp;
+}
+
+/**
+ *hoare_partition - hoare partition sorting scheme implementation
+ *@array: array
+ *@i: first array element
+ *@j: last array element
+ *@size: size array
+ *Return: return the position of the last element sorted
+ */
+int hoare_partition(int *array, int i, int j, int size)
+{
+	int current = i - 1, finder = j + 1;
+	int pivot = array[j];
+
+	while (1)
 	{
-		tmp = array[a];
-		array[a] = array[b];
-		array[b] = tmp;
+		do {
+			current++;
+		} while (array[current] < pivot);
+		do {
+			finder--;
+		} while (array[finder] > pivot);
+		if (current >= finder)
+			return (current);
+		swap(array, current, finder);
+		print_array(array, size);
 	}
 }
 
 /**
- * merge - sort bitonic sequences recursively in both orders
- * @array: array
- * @low: first element
- * @n: elements number
- * @order: 1: ascending order, 0 descending order
+ *qs - qucksort algorithm implementation
+ *@array: array
+ *@first: first array element
+ *@last: last array element
+ *@size: array size
  */
-void merge(int array[], int low, int n, int order)
+void qs(int *array, ssize_t first, ssize_t last, int size)
 {
-	int mid, i;
+	ssize_t position = 0;
 
-	if (n > 1)
+	if (first < last)
 	{
-		mid = n / 2;
-		for (i = low; i < low + mid; i++)
-			swap(array, i, i + mid, order);
-		merge(array, low, mid, oder);
-		merge(array, low + mid, mid, order);
+		position = hoare_partition(array, first, last, size);
+		qs(array, first, position - 1, size);
+		qs(array, position, last, size);
 	}
 }
 
 /**
- * bitonicsort - bitonic sort algorithm implementation
- * @array: array
- * @low: first element
- * @n: number of elements
- * @order: 1: ascending order, 0 descending order
- * @size: array lenght
+ *quick_sort_hoare - prepare the terrain to quicksort algorithm
+ *@array: array
+ *@size: array size
  */
-void bitonicsort(int array[], int low, int n, int order, int size)
+void quick_sort_hoare(int *array, size_t size)
 {
-	int mid;
-	
-	if (n > 1)
-	{
-		if (order >= 1)
-		{
-			printf("Merging [%i/%i] (UP):\n", n, size);
-			print_array(&array[low], n);
-		}
-		else
-		{
-			printf("Merging [%i/%i] (DOWN):\n", n, size);
-			print_array(&array[low], n);
-		}
-		mid = n / 2;
-		bitonicsort(array, low, mid, 1, size);
-		bitonicsort(array, low + mid, mid, 0, size);
-		merge(array, low, n, order);
-		if (order <= 0)
-		{
-			printf("Result [%i/%i] (DOWN):\n", n, size);
-			print_array(&array[low], n);
-		}
-		if (order >= 1)
-		{
-			printf("Result [%i/%i] (UP):\n", n, size);
-			print_array(&array[low], n);
-		}
-	}
-}
-
-/**
- * bitonic_sort - prepare the terrain to bitonic sort algorithm
- * @array: array
- * @size: array lenght
- */
-void bitonic_sort(int *array, size_t size)
-{
-	int order = 1;
 	if (!array || size < 2)
 		return;
-	bitonicsort(array, 0, size, order, size);
+	qs(array, 0, size - 1, size);
 }
