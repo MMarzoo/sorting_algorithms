@@ -50,7 +50,7 @@ void maxHeapify(int *array, size_t size, int idx, size_t n)
  */
 void heap_sort(int *array, size_t size)
 {
-	int 1;
+	int i;
 
 	if (!array || size < 2)
 		return;
