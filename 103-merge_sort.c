@@ -1,4 +1,6 @@
 #include "sort.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 /**
  * merge_compare - compares merges
@@ -21,13 +23,9 @@ void merge_compare(int *array, size_t start, size_t stop, int *new)
 	print_array(array + mid, stop - mid);
 	for (k = start; k < stop; k++)
 		if (i < mid && (j >= stop || array[i] <= array[j]))
-		{
 			new[k] = array[i++];
-		}
 		else
-		{
 			new[k] = array[j++];
-		}
 	printf("[Done]: ");
 	print_array(new + start, stop - start);
 }
