@@ -1,6 +1,4 @@
 #include "sort.h"
-#include <stdio.h>
-#include <stdlib.h>
 
 /**
  * merge_compare - compares merges
@@ -44,10 +42,10 @@ void merge_sort_top_down(int *array, size_t start, size_t stop, int *new)
 	size_t mid;
 
 	mid = (start + stop) / 2;
-	if (stop - start < 2)
+	if ((stop - start) < 2)
 		return;
 	merge_sort_top_down(new, start, mid, array);
-	merge_sort_top_down(array, mid, stop, new);
+	merge_sort_top_down(new, mid, stop, array);
 	merge_compare(array, start, stop, new);
 }
 
