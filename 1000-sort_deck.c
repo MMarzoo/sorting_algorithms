@@ -10,7 +10,7 @@ int _strcmp(const char *str1, char *str2)
 {
 	size_t i = 0;
 
-	if (str1 == '\0')
+	if (!str1)
 		return (0);
 	while (str1[i])
 	{
@@ -18,7 +18,7 @@ int _strcmp(const char *str1, char *str2)
 			return (0);
 		i++;
 	}
-	if (str1[i] == '\0' && str2[i])
+	if (!str1[i] && str2[i])
 		return (0);
 	return (1);
 }
@@ -57,7 +57,6 @@ int get_card_position(deck_node_t *node)
 deck_node_t *swap_card(deck_node_t *card, deck_node_t **deck)
 {
 	deck_node_t *back = card->prev, *current = card;
-	/*NULL, 19, 48, 9, 71, 13, NULL*/
 
 	back->next = current->next;
 	if (current->next)
